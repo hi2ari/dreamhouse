@@ -175,8 +175,8 @@ node {
             // Collect Results.
             // -------------------------------------------------------------------------
 			stage('Collect results') {
-				junit keepLongStdio: true, testResults: 'tests/**/*-junit.xml'
-			}
+*/			//	junit keepLongStdio: true, testResults: 'tests/**/*-junit.xml'
+/*			}
 			
             // -------------------------------------------------------------------------
             // Delete test scratch org.
@@ -189,8 +189,8 @@ node {
                     error 'Salesforce test scratch org deletion failed.'
                 }
             }
+            */
 
-*/
             // -------------------------------------------------------------------------
             // Create package version.
             // -------------------------------------------------------------------------
