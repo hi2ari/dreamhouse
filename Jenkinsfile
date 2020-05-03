@@ -274,7 +274,8 @@ node {
             // -------------------------------------------------------------------------------
 
             stage('Assign Permset Install Package Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:user:permset:assign --targetusername ${SFDC_USERNAME} --permsetname Dreamhouse"
+                //rc = bat returnStatus: true, script: "\"${toolbelt}\" force:user:permset:assign --targetusername ${SFDC_USERNAME} --permsetname Dreamhouse"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:user:permset:assign --permsetname Dreamhouse"
                 if (rc != 0) {
                     error 'Salesforce assigning permset Dreamhouse to the package install scratch org defualt user failed.'
                 }
