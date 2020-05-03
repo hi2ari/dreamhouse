@@ -313,12 +313,12 @@ node {
                 //if (rc != 0) {
                 //   error 'Salesforce password generatation for package install scratch org user failed.'
                 //}
-				printf rmsg
+				println(rmsg)
 				//println('Hello from a Job DSL script1!')
 				def beginIndex = rmsg.indexOf('{')
 				def endIndex = rmsg.indexOf('}')
 				def jsobSubstring = rmsg.substring(beginIndex)
-				//println(jsobSubstring)
+				println(jsobSubstring)
 				def jsonSlurper = new JsonSlurperClassic()
 				def robj = jsonSlurper.parseText(jsobSubstring)
 				if (robj.status != 0) { error 'Salesforce password generatation for package install scratch org user failed: ' + robj.message }
@@ -331,12 +331,12 @@ node {
 			
 			stage('Display Details for Package Install Scratch Org User') {
 				rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:display --targetusername ${SFDC_USERNAME} --json"
-				printf rmsg
+				println(rmsg)
 				//println('Hello from a Job DSL script1!')
 				def beginIndex = rmsg.indexOf('{')
 				def endIndex = rmsg.indexOf('}')
 				def jsobSubstring = rmsg.substring(beginIndex)
-				//println(jsobSubstring)
+				println(jsobSubstring)
 				def jsonSlurper = new JsonSlurperClassic()
 				def robj = jsonSlurper.parseText(jsobSubstring)
 				if (robj.status != 0) { error 'Display details for package install scratch org user failed: ' + robj.message }
