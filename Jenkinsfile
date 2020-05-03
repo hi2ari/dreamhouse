@@ -16,7 +16,13 @@ node {
 	def SFDC_TESTRUNID
 
     def toolbelt = tool 'toolbelt'
-
+    
+    /***************************************************************************************
+    * Variable for capturing the details of the Scratch Org where the package is installed
+    ****************************************************************************************/
+    def SF_Install_Package_Scratch_Org_Username
+    def SF_Install_Package_Scratch_Org_Password
+    def SF_Install_Package_Scratch_Org_URL
 
     // -------------------------------------------------------------------------
     // Check out code from source control.
@@ -341,11 +347,20 @@ node {
 				def robj = jsonSlurper.parseText(jsobSubstring)
 				if (robj.status != 0) { error 'Display details for package install scratch org user failed: ' + robj.message }
 				//SFDC_USERNAME=robj.result.username
+                SF_Install_Package_Scratch_Org_Username = robj.result.username
+                SF_Install_Package_Scratch_Org_Password = robj.result.password
+                SF_Install_Package_Scratch_Org_URL = robj.result.instanceUrl
 				robj = null
 			}
         }
     }
 }
+
+
+//Setting the value needs to be deleted after checking this build
+env.SF_Install_Package_Scratch_Org_Username = SF_Install_Package_Scratch_Org_Username
+env.SF_Install_Package_Scratch_Org_Password = SF_Install_Package_Scratch_Org_Password
+env.SF_Install_Package_Scratch_Org_URL = SF_Install_Package_Scratch_Org_URL
 
 def command(script) {
     if (isUnix()) {
