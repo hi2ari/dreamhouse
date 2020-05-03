@@ -9,9 +9,9 @@ node {
     def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
     def TEST_LEVEL='RunLocalTests'
     def PACKAGE_NAME='0Ho5w000000KymjCAC'
-    def PACKAGE_VERSION
+    def PACKAGE_VERSION='04t5w000003gDRaAAM'  //needs to be removed
     def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
-    def SFDC_USERNAME
+    def SFDC_USERNAME = 'test-hhit95g3zydp@example.com'  //needs to be removed
 	def RUN_ARTIFACT_DIR="tests\\%BUILD_NUMBER%"
 	def SFDC_TESTRUNID
 
@@ -191,7 +191,7 @@ node {
             }
             */
 
-            // -------------------------------------------------------------------------
+  /*          // -------------------------------------------------------------------------
             // Create package version.
             // -------------------------------------------------------------------------
 
@@ -257,13 +257,13 @@ node {
                 }
             }
 
-
+*/
             // -------------------------------------------------------------------------
             // Install package in scratch org.
             // -------------------------------------------------------------------------
 
             stage('Install Package In Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:package:install --package ${PACKAGE_VERSION} --targetusername ${SFDC_USERNAME} --wait 10"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:package:install --package ${PACKAGE_VERSION} --targetusername ${SFDC_USERNAME} --wait 10 --publishwait 10 --noprompt"
                 if (rc != 0) {
                     error 'Salesforce package install failed.'
                 }
