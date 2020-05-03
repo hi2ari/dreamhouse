@@ -309,7 +309,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Generate Password for Package Install Scratch Org User') {
-                rmsg = bat returnStatus: true, script: "\"${toolbelt}\" force:user:password:generate --targetusername ${SFDC_USERNAME} --json"
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:password:generate --targetusername ${SFDC_USERNAME} --json"
                 //if (rc != 0) {
                 //   error 'Salesforce password generatation for package install scratch org user failed.'
                 //}
