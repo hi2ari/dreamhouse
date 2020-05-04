@@ -7,7 +7,7 @@ node {
     def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
     def SF_USERNAME=env.SF_LOGINID
     def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
-    def SF_Instl_Pkg_Scrt_Org_Usrnme = env.SF_Instl_Pkg_Scrt_Org_Usrnme
+    def SF_Instl_Pkg_Scrt_Org_Usrnme=env.SF_Instl_Pkg_Scrt_Org_Usrnme
     def TEST_LEVEL='RunLocalTests'
     def PACKAGE_NAME='0Ho5w000000KymjCAC'
     def PACKAGE_VERSION='04t5w000003gDRaAAM'
