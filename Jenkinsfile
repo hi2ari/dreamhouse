@@ -191,7 +191,7 @@ node {
                 }
                 SFDC_USERNAME=null
             }
-            */
+            
 
   /*          // -------------------------------------------------------------------------
             // Create package version.
@@ -299,7 +299,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Run Tests In Package Install Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:apex:test:run --targetusername ${SFDC_USERNAME} --resultformat human --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:apex:test:run --targetusername ${SF_Install_Package_Scratch_Org_Username} --resultformat human --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
                 if (rc != 0) {
                     error 'Salesforce unit test run in pacakge install scratch org failed.'
                 }
