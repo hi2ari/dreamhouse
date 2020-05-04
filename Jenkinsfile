@@ -10,7 +10,7 @@ node {
     def SF_Install_Package_Scratch_Org_Username = env.SF_Install_Package_Scratch_Org_Username
     def TEST_LEVEL='RunLocalTests'
     def PACKAGE_NAME='0Ho5w000000KymjCAC'
-    def PACKAGE_VERSION
+    def PACKAGE_VERSION='04t5w000003gDRaAAM'
     def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
     def SFDC_USERNAME
 	  def RUN_ARTIFACT_DIR="tests\\%BUILD_NUMBER%"
