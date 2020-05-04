@@ -75,7 +75,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Create Test Scratch Org') {
-                rmsg = bat returnStatus: true, script: "\"${toolbelt}\" force:org:create --targetdevhubusername ${SF_USERNAME} --setdefaultusername --definitionfile config/project-scratch-def.json --json  --wait 10 --durationdays 1"
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:org:create --targetdevhubusername ${SF_USERNAME} --setdefaultusername --definitionfile config/project-scratch-def.json --json  --wait 10 --durationdays 1"
                 //printf rmsg
 				        //println('Hello from a Job DSL script1!')
 				        def beginIndex = rmsg.indexOf('{')
