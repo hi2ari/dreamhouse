@@ -7,7 +7,7 @@ node {
     def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
     def SF_USERNAME=env.SF_LOGINID
     def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
-    def SF_INSTLLD_PKG_ORG_USRNM=env.SF_INSTLLD_PKG_ORG_USRNM
+    //def SF_INSTLLD_PKG_ORG_USRNM=env.SF_INSTLLD_PKG_ORG_USRNM
     def TEST_LEVEL='RunLocalTests'
     def PACKAGE_NAME='0Ho5w000000KymjCAC'
     def PACKAGE_VERSION='04t5w000003gDRaAAM'
@@ -107,7 +107,7 @@ node {
             // Push source to the test scratch org.
             // -------------------------------------------------------------------------
 
-            stage('Display Test Scratch Org') {
+            stage('Push Source to Scratch Org') {
                 rc = bat returnStatus: true, script: "\"${toolbelt}\" force:source:push --targetusername ${SFDC_USERNAME}"
                 if (rc != 0) {
                     error 'Salesforce push source to test scratch org failed.'
@@ -145,7 +145,7 @@ node {
             stage('Run Tests In Test Scratch Org') {
                     bat "mkdir ${RUN_ARTIFACT_DIR}"
                     timeout(time: 120, unit: 'SECONDS') {
-                    rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:apex:test:run --testlevel ${TEST_LEVEL} --outputdir ${RUN_ARTIFACT_DIR} --resultformat tap --json --codecoverage --targetusername ${SFDC_USERNAME}"
+                    rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:apex:test:run --testlevel ${TEST_LEVEL} --outputdir ${RUN_ARTIFACT_DIR} --resultformat human --json --codecoverage --targetusername ${SFDC_USERNAME}"
                 }
                 //println('Hello from a Job DSL script4!')
 				        println(rmsg)
@@ -215,14 +215,16 @@ node {
                 println PACKAGE_VERSION
                 response = null
             }
-
+*/
+            
+            
 
             // -------------------------------------------------------------------------
             // Create new scratch org to install package to.
             // -------------------------------------------------------------------------
 
             stage('Create Package Install Scratch Org') {
-                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:org:create --targetdevhubusername ${SF_USERNAME} --setdefaultusername --targetusername ${SFDC_USERNAME} --definitionfile config/project-scratch-def.json --wait 10 --durationdays 1 --json"
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:org:create --targetdevhubusername ${SF_USERNAME} --setdefaultusername --definitionfile config/project-scratch-def.json --wait 10 --durationdays 1 --json"
                 printf rmsg
 				        //println('Hello from a Job DSL script1!')
 				        def beginIndex = rmsg.indexOf('{')
@@ -235,14 +237,14 @@ node {
 				        SFDC_USERNAME=robj.result.username
 				        robj = null
             }
-*/
+
 
             // -------------------------------------------------------------------------
             // Display install scratch org info.
             // -------------------------------------------------------------------------
 
             stage('Display Install Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:org:display --targetusername ${SF_INSTLLD_PKG_ORG_USRNM}"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:org:display --targetusername ${SFDC_USERNAME}"
                 if (rc != 0) {
                     error 'Salesforce package install scratch org display failed.'
                 }
@@ -265,7 +267,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Install Package In Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:package:install --package ${PACKAGE_VERSION} --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --wait 10 --publishwait 10 --noprompt"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:package:install --package ${PACKAGE_VERSION} --targetusername ${SFDC_USERNAME} --wait 10 --publishwait 10 --noprompt"
                 if (rc != 0) {
                     error 'Salesforce package install failed.'
                 }
@@ -299,7 +301,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Run Tests In Package Install Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:apex:test:run --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --resultformat human --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:apex:test:run --targetusername ${SFDC_USERNAME} --resultformat human --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
                 if (rc != 0) {
                     error 'Salesforce unit test run in pacakge install scratch org failed.'
                 }
@@ -311,7 +313,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Generate Password for Package Install Scratch Org User') {
-                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:password:generate --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --json"
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:password:generate --targetusername ${SFDC_USERNAME} --json"
                 //if (rc != 0) {
                 //   error 'Salesforce password generatation for package install scratch org user failed.'
                 //}
@@ -332,7 +334,7 @@ node {
             // -------------------------------------------------------------------------
 			
 			    stage('Display Details for Package Install Scratch Org User') {
-				      rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:display --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --json"
+				      rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:display --targetusername ${SFDC_USERNAME} --json"
 				      println(rmsg)
 				      //println('Hello from a Job DSL script1!')
 				      def beginIndex = rmsg.indexOf('{')
