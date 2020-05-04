@@ -7,7 +7,7 @@ node {
     def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
     def SF_USERNAME=env.SF_LOGINID
     def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
-    def SF_Instl_Pkg_Scrt_Org_Usrnme=env.SF_Instl_Pkg_Scrt_Org_Usrnme
+    def SF_INSTLLD_PKG_ORG_USRNM = env.SF_INSTLLD_PKG_ORG_USRNM
     def TEST_LEVEL='RunLocalTests'
     def PACKAGE_NAME='0Ho5w000000KymjCAC'
     def PACKAGE_VERSION='04t5w000003gDRaAAM'
@@ -242,7 +242,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Display Install Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:org:display --targetusername ${SF_Instl_Pkg_Scrt_Org_Usrnme}"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:org:display --targetusername ${SF_INSTLLD_PKG_ORG_USRNM}"
                 if (rc != 0) {
                     error 'Salesforce package install scratch org display failed.'
                 }
@@ -265,7 +265,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Install Package In Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:package:install --package ${PACKAGE_VERSION} --targetusername ${SF_Instl_Pkg_Scrt_Org_Usrnme} --wait 10 --publishwait 10 --noprompt"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:package:install --package ${PACKAGE_VERSION} --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --wait 10 --publishwait 10 --noprompt"
                 if (rc != 0) {
                     error 'Salesforce package install failed.'
                 }
@@ -299,7 +299,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Run Tests In Package Install Scratch Org') {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:apex:test:run --targetusername ${SF_Instl_Pkg_Scrt_Org_Usrnme} --resultformat human --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:apex:test:run --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --resultformat human --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
                 if (rc != 0) {
                     error 'Salesforce unit test run in pacakge install scratch org failed.'
                 }
@@ -311,7 +311,7 @@ node {
             // -------------------------------------------------------------------------
 
             stage('Generate Password for Package Install Scratch Org User') {
-                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:password:generate --targetusername ${SF_Instl_Pkg_Scrt_Org_Usrnme} --json"
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:password:generate --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --json"
                 //if (rc != 0) {
                 //   error 'Salesforce password generatation for package install scratch org user failed.'
                 //}
@@ -332,7 +332,7 @@ node {
             // -------------------------------------------------------------------------
 			
 			    stage('Display Details for Package Install Scratch Org User') {
-				      rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:display --targetusername ${SF_Instl_Pkg_Scrt_Org_Usrnme} --json"
+				      rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:user:display --targetusername ${SF_INSTLLD_PKG_ORG_USRNM} --json"
 				      println(rmsg)
 				      //println('Hello from a Job DSL script1!')
 				      def beginIndex = rmsg.indexOf('{')
@@ -343,7 +343,7 @@ node {
 				      def robj = jsonSlurper.parseText(jsobSubstring)
 				      if (robj.status != 0) { error 'Display details for package install scratch org user failed: ' + robj.message }
 				      //SFDC_USERNAME=robj.result.username
-                SF_Instl_Pkg_Scrt_Org_Usrnme = robj.result.username
+                SF_INSTLLD_PKG_ORG_USRNM = robj.result.username
                 SF_Install_Package_Scratch_Org_Password = robj.result.password
                 SF_Install_Package_Scratch_Org_URL = robj.result.instanceUrl
 				      robj = null
